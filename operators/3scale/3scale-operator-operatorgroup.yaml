@@ -1,0 +1,8 @@
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: 3scale-operator-group
+  namespace: some_target_namespace
+spec:
+  targetNamespaces:
+  - some_target_namespace

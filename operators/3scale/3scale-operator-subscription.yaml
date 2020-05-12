@@ -1,0 +1,12 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: 3scale-community-operator
+  namespace: some_target_namespace
+spec:
+  channel: threescale-2.7
+  installPlanApproval: Automatic
+  name: 3scale-community-operator
+  source: community-operators
+  startingCSV: 3scale-community-operator.v0.4.0
+  sourceNamespace: openshift-marketplace
