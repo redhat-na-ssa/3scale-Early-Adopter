@@ -1,0 +1,15 @@
+apiVersion: apps.3scale.net/v1alpha1
+kind: APIManager
+metadata:
+  name: qe-tests-apimanager
+spec:
+  wildcardDomain: insert_your_wildcard_domain_here
+
+# comment out below line to deploy full 3scale version
+  resourceRequirementsEnabled: false
+
+# This assumes that nfs-provisioner is deployed on the cluster. comment out to use default provider for RWX PVC
+  system:
+    fileStorage:
+      persistentVolumeClaim:
+        storageClassName: nfs
