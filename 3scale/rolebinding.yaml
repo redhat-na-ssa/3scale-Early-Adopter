@@ -1,0 +1,25 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: apimanager-role
+  namespace: target # Should be namespace you are granting access to
+rules:
+- apiGroups: ["*"]
+  resources: ["*"]
+  verbs: ["*"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: apimanager-rolebinding
+  namespace: target # Should be namespace you are granting access to
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: apimanager-role # Should match name of Role
+subjects:
+- namespace: source # Should match namespace where SA lives
+  kind: ServiceAccount
+  name: some-service-account # Should match service account name, above
