@@ -7,4 +7,4 @@ metadata:
 spec:
   targetNamespace: some_target_namespace
   packages: 3scale-community-operator
-  source: community-operators
+  source: threescale-operator-master-source
