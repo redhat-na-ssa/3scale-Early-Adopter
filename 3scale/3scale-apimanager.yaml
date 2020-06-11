@@ -5,6 +5,16 @@ metadata:
 spec:
   wildcardDomain: insert_your_wildcard_domain_here
 
+#  should be default now, due to new OperatorSource
+#  apicast:
+#    image: "quay.io/3scale/rh-apicast:3scale2.9"
+#  backend:
+#    image: "quay.io/3scale/rh-apisonator:3scale2.9"
+#  system:
+#    image: "quay.io/3scale/rh-porta:3scale2.9"
+#  zync:
+#    image: "quay.io/3scale/rh-zync:3scale2.9"
+
 # comment out below line to deploy full 3scale version
   resourceRequirementsEnabled: false
 
