@@ -7,6 +7,4 @@ spec:
   sourceType: grpc
   image: quay.io/3scale/rh-3scale-operator-index:some-random-tag
 #  displayName: "3scale ER Operators"
-#  publisher: "3scale Continuous Productization"
-#  authorizationToken:
-#    secretName: rh-verified-operators-secret
+  publisher: "3scale Engineering Continuous Productization"
