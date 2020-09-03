@@ -8,5 +8,5 @@ spec:
   installPlanApproval: Automatic
   name: 3scale-operator
   source: threescale-operators-beta
-  startingCSV: 3scale-operator.v0.6.0
+  startingCSV: 3scale-operator.v0.6.1
   sourceNamespace: openshift-marketplace
