@@ -7,6 +7,6 @@ spec:
   channel: threescale-2.9
   installPlanApproval: Automatic
   name: 3scale-operator
-  source: threescale-operators-beta
+  source: threescale-productized-operators-latest
   startingCSV: 3scale-operator.v0.6.1
   sourceNamespace: openshift-marketplace
