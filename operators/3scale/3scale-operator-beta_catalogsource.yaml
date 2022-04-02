@@ -1,10 +1,10 @@
 apiVersion: operators.coreos.com/v1alpha1
 kind: CatalogSource
 metadata:
-  name: threescale-productized-operators-latest
-  namespace: openshift-marketplace
+  name: threescale-productized-operators-latest-catalog
+  namespace: rhi-3scale
 spec:
   sourceType: grpc
-  image: quay.io/3scale/rh-3scale-operator-index:some-random-tag
+  image: quay.io/3scale/rh-3scale-operator-index:latest
 #  displayName: "3scale ER Operators"
   publisher: "3scale Engineering Continuous Productization"

@@ -2,7 +2,7 @@ apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
   name: 3scale-operator-group
-  namespace: some_target_namespace
+  namespace: rhi-3scale
 spec:
   targetNamespaces:
-  - some_target_namespace
+  - rhi-3scale

@@ -1,0 +1,154 @@
+= 3scale-deployment
+
+A dead simple repo to allow scripting of a 3scale deployment using the 3scale Operator.
+
+:numbered:
+
+== 2.12-beta Early Adapter
+
+=== Overview
+Red Hat is offering an Early Adapter program to select partners and customers for the 2.12 release of the 3scale API Manager.
+
+Of critical importance in this release is the ability to run the link:https://issues.redhat.com/browse/THREESCALE-5725[API Manager in a FIPS enabled] OpenShift cluster.
+
+
+The container images for the beta release of the API Manager are managed in a private `quay.io` organization.
+This document will guide you through the procedure to access these beta release images and provision the API Manager.
+
+=== Pre-requisites
+
+
+. OpenShift Minimum Requirements:
+.. Version:  4.10
+.. RAM:  48 GB
+.. CPU:  16 cores
+.. Filesystem:
+... 5 PVCs of 5 GBs each of RWO
+... 1 PVC of 5 GBs of RWX
+.. FIPS enabled
+.. Suggested:  wildcard certificate from known Certificate Authority for application routes exposed through OpenShift
+
+. TO-DO: Demonstrate how to validate that FIPS is enabled
+
+
+. Contact 3scale engineering team or your Red Hat SA for the credentials to the private quay.io image repository.
+
+. Based on the credentials provided, set the following environment variables in your shell:
++
+-----
+export PRIVATE_QUAY_ACCOUNT_NAME="CHANGE_ME"
+export PRIVATE_QUAY_ACCOUNT_PASSWORD="CHANGE_ME"
+-----
+
+
+
+=== Procedure
+
+==== OpenShift Pull Secret
+. Download your existing OpenShift pull-secret to a temp file called _private-quay-enabled-pull-secret.json_:
++
+-----
+$ oc get secret/pull-secret \
+            -n openshift-config \
+            --template='{{index .data ".dockerconfigjson" | base64decode}}' \
+            > private-quay-enabled-pull-secret.json
+-----
+
+. Add credentials of private quay image repository account to pull secret:
++
+-----
+$ oc registry login --registry="quay.io" \
+        --auth-basic="$PRIVATE_QUAY_ACCOUNT_NAME:$PRIVATE_QUAY_ACCOUNT_PASSWORD" \
+        --to=private-quay-enabled-pull-secret.json
+-----
+
+. Update pull secret for your OpenShift cluster:
++
+-----
+$ oc set data secret/pull-secret \
+        -n openshift-config \
+        --from-file=.dockerconfigjson=private-quay-enabled-pull-secret.json
+-----
+
+
+==== 3scale API Manager operator resources
+. Create _rhi-3scale_ project
++
+-----
+$ oc new-project rhi-3scale
+-----
+
+. Create CatalogSource for 3scale beta operator:
++
+-----
+$ oc create -n rhi-3scale \
+        -f https://raw.githubusercontent.com/jbride/3scale-deployment/2.12-beta/operators/3scale/3scale-operator-beta_catalogsource.yaml 
+-----
+
+.. NOTE:  currently getting the following warning in the events log
++
+-----
+3m5s        Warning   FailedToUpdateEndpointSlices   service/threescale-productized-operators-latest-catalog     Error updating Endpoint Slices for Service rhi-3scale/threescale-productized-operators-latest-catalog: failed to delete threescale-productized-operators-latest-catalog-f4rmp EndpointSlice for Service rhi-3scale/threescale-productized-operators-latest-catalog: endpointslices.discovery.k8s.io "threescale-productized-operators-latest-catalog-f4rmp" not found
+-----
+
+. Observe creation of new pod corresponding to CatalogSource:
++
+-----
+$ oc get pod -n rhi-3scale
+
+NAME                                                    READY   STATUS    RESTARTS   AGE
+threescale-productized-operators-latest-catalog-74l88   1/1     Running   0          17s
+-----
+
+. Create _operator-group_ :
++
+-----
+$ oc create -n rhi-3scale \
+        -f https://raw.githubusercontent.com/jbride/3scale-deployment/2.12-beta/operators/3scale/3scale-operator-operatorgroup.yaml
+-----
+
+. Create operator subscription :
++
+-----
+$ oc create -n rhi-3scale \
+        -f https://raw.githubusercontent.com/jbride/3scale-deployment/2.12-beta/operators/3scale/3scale-operator-subscription.yaml
+-----
+
+.. ERROR: Currently getting the following error in the events log:
++
+-----
+$ 0s          Normal    BackOff                        pod/b48a88c0f20a60e1e038df70c6d5c2712b8d84d0f8860903a12161feb1569pk   Back-off pulling image "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:137866ad70b94281a575ae818fafb4a2ad1cd057555e87688139b0456f932786"
+-----
+
+.. ERROR: 
++
+Appears there is a kubernetes job that is kicked off that attempts to pull down an image from quay.io/openshift-release-dev/ocp-v4.0-art-dev  ???
++
+What is the purpose of this job and of this image ??
++
+The following error message is found in the auto-generated _install plan_:
++
+-----
+    - message: bundle contents have not yet been persisted to installplan status
+      reason: BundleNotUnpacked
+      status: "True"
+      type: BundleLookupNotPersisted
+    - lastTransitionTime: "2022-04-02T06:32:59Z"
+      message: 'unpack job not completed: Unpack pod(rhi-3scale/b48a88c0f20a60e1e038df70c6d5c2712b8d84d0f8860903a12161feb1569pk)
+        container(util) is pending. Reason: ImagePullBackOff, Message: Back-off pulling
+        image "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:137866ad70b94281a575ae818fafb4a2ad1cd057555e87688139b0456f932786"
+        | Unpack pod(rhi-3scale/b48a88c0f20a60e1e038df70c6d5c2712b8d84d0f8860903a12161feb1569pk)
+        container(pull) is pending. Reason: PodInitializing, Message: '
+      reason: JobIncomplete
+      status: "True"
+      type: BundleLookupPending
+-----
+
+. View version of operator image from auto-generated _InstallPlan_ :
++
+-----
+$ oc get installplan -n rhi-3scale -o json      | jq -r .items[].status.bundleLookups[].path
+
+
+quay.io/3scale/rh-3scale-operator-bundle:3scale-amp-2.12-rhel-7-containers-alpha-30878-20220331194554
+-----
