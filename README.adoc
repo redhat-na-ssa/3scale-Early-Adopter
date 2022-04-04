@@ -57,7 +57,7 @@ $ oc get secret/pull-secret \
 . Add credentials of private quay image repository account to pull secret:
 +
 -----
-$ oc registry login --registry="quay.io" \
+$ oc registry login --registry="quay.io/3scale" \
         --auth-basic="$PRIVATE_QUAY_ACCOUNT_NAME:$PRIVATE_QUAY_ACCOUNT_PASSWORD" \
         --to=private-quay-enabled-pull-secret.json
 -----
@@ -68,6 +68,31 @@ $ oc registry login --registry="quay.io" \
 $ oc set data secret/pull-secret \
         -n openshift-config \
         --from-file=.dockerconfigjson=private-quay-enabled-pull-secret.json
+-----
+
+
+. Verify your cluster pull-secret now contains two references to quay image repository (similar to the following) :
++
+-----
+$ oc get secret/pull-secret \
+    -n openshift-config \
+    --template='{{index .data ".dockerconfigjson" | base64decode}}' \
+    | jq -r '.auths|to_entries | .[]|select(.key | contains("quay.io"))'
+
+
+{
+  "key": "quay.io",
+  "value": {
+    "auth": "xxxxxxxxxxxxxxxxxxxx",
+    "email": "rhpds-admins@redhat.com"
+  }
+}
+{
+  "key": "quay.io/3scale",
+  "value": {
+    "auth": "xxxxxxxxxxxxxxxxxx"
+  }
+}
 -----
 
 
@@ -114,56 +139,32 @@ $ oc create -n rhi-3scale \
         -f https://raw.githubusercontent.com/jbride/3scale-deployment/2.12-beta/operators/3scale/3scale-operator-subscription.yaml
 -----
 
-.. ERROR: Currently getting the following error in the events log:
+.. Verify Operator Lifecycle Manager job that installs 3scale operator:
 +
 -----
-$ 0s          Normal    BackOff                        pod/b48a88c0f20a60e1e038df70c6d5c2712b8d84d0f8860903a12161feb1569pk   Back-off pulling image "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:137866ad70b94281a575ae818fafb4a2ad1cd057555e87688139b0456f932786"
+$ oc describe job $( oc get jobs | sed -n 2p | awk '{print $1}' )
 -----
-
-.. ERROR: 
 +
-Appears there is a kubernetes job that is kicked off that attempts to pull down an image from quay.io/openshift-release-dev/ocp-v4.0-art-dev  ???
-+
-What is the purpose of this job and of this image ??
-+
-The following error message is found in the auto-generated _install plan_:
+Results should be similar to the following:
 +
 -----
-    - message: bundle contents have not yet been persisted to installplan status
-      reason: BundleNotUnpacked
-      status: "True"
-      type: BundleLookupNotPersisted
-    - lastTransitionTime: "2022-04-02T06:32:59Z"
-      message: 'unpack job not completed: Unpack pod(rhi-3scale/b48a88c0f20a60e1e038df70c6d5c2712b8d84d0f8860903a12161feb1569pk)
-        container(util) is pending. Reason: ImagePullBackOff, Message: Back-off pulling
-        image "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:137866ad70b94281a575ae818fafb4a2ad1cd057555e87688139b0456f932786"
-        | Unpack pod(rhi-3scale/b48a88c0f20a60e1e038df70c6d5c2712b8d84d0f8860903a12161feb1569pk)
-        container(pull) is pending. Reason: PodInitializing, Message: '
-      reason: JobIncomplete
-      status: "True"
-      type: BundleLookupPending
------
-
-.. job when subscription is created:
-+
------
-$ oc describe job b48a88c0f20a60e1e038df70c6d5c2712b8d84d0f8860903a12161feb1e1dc3
-
-Name:                     b48a88c0f20a60e1e038df70c6d5c2712b8d84d0f8860903a12161feb1e1dc3
+Name:                     8a7e08b2d268639550cdd6557a92916b8be29a89bda1a28d14e3519e465f161
 Namespace:                rhi-3scale
-Selector:                 controller-uid=47f77173-2a4f-4593-93a3-3b2cb7f32c90
-Labels:                   controller-uid=47f77173-2a4f-4593-93a3-3b2cb7f32c90
-                          job-name=b48a88c0f20a60e1e038df70c6d5c2712b8d84d0f8860903a12161feb1e1dc3
+Selector:                 controller-uid=69b8ff51-a3ad-4254-856b-7d0a129a321c
+Labels:                   controller-uid=69b8ff51-a3ad-4254-856b-7d0a129a321c
+                          job-name=8a7e08b2d268639550cdd6557a92916b8be29a89bda1a28d14e3519e465f161
 Annotations:              batch.kubernetes.io/job-tracking: 
 Parallelism:              1
 Completions:              1
 Completion Mode:          NonIndexed
-Start Time:               Sat, 02 Apr 2022 00:32:58 -0600
+Start Time:               Mon, 04 Apr 2022 11:04:33 -0600
+Completed At:             Mon, 04 Apr 2022 11:04:46 -0600
+Duration:                 13s
 Active Deadline Seconds:  600s
-Pods Statuses:            0 Running / 0 Succeeded / 1 Failed
+Pods Statuses:            0 Running / 1 Succeeded / 0 Failed
 Pod Template:
-  Labels:  controller-uid=47f77173-2a4f-4593-93a3-3b2cb7f32c90
-           job-name=b48a88c0f20a60e1e038df70c6d5c2712b8d84d0f8860903a12161feb1e1dc3
+  Labels:  controller-uid=69b8ff51-a3ad-4254-856b-7d0a129a321c
+           job-name=8a7e08b2d268639550cdd6557a92916b8be29a89bda1a28d14e3519e465f161
   Init Containers:
    util:
     Image:      quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:137866ad70b94281a575ae818fafb4a2ad1cd057555e87688139b0456f932786
@@ -181,7 +182,7 @@ Pod Template:
     Mounts:
       /util from util (rw)
    pull:
-    Image:      quay.io/3scale/rh-3scale-operator-bundle:3scale-amp-2.12-rhel-7-containers-alpha-30878-20220331194554
+    Image:      quay.io/3scale/rh-3scale-operator-bundle:3scale-amp-2.12-rhel-7-containers-alpha-48872-20220404110605
     Port:       <none>
     Host Port:  <none>
     Command:
@@ -209,13 +210,13 @@ Pod Template:
       -n
       rhi-3scale
       -c
-      b48a88c0f20a60e1e038df70c6d5c2712b8d84d0f8860903a12161feb1e1dc3
+      8a7e08b2d268639550cdd6557a92916b8be29a89bda1a28d14e3519e465f161
       -z
     Requests:
       cpu:     10m
       memory:  50Mi
     Environment:
-      CONTAINER_IMAGE:  quay.io/3scale/rh-3scale-operator-bundle:3scale-amp-2.12-rhel-7-containers-alpha-30878-20220331194554
+      CONTAINER_IMAGE:  quay.io/3scale/rh-3scale-operator-bundle:3scale-amp-2.12-rhel-7-containers-alpha-48872-20220404110605
     Mounts:
       /bundle from bundle (rw)
   Volumes:
@@ -228,11 +229,10 @@ Pod Template:
     Medium:     
     SizeLimit:  <unset>
 Events:
-  Type     Reason            Age   From            Message
-  ----     ------            ----  ----            -------
-  Normal   SuccessfulCreate  2d6h  job-controller  Created pod: b48a88c0f20a60e1e038df70c6d5c2712b8d84d0f8860903a12161feb1569pk
-  Normal   SuccessfulDelete  2d6h  job-controller  Deleted pod: b48a88c0f20a60e1e038df70c6d5c2712b8d84d0f8860903a12161feb1569pk
-  Warning  DeadlineExceeded  2d6h  job-controller  Job was active longer than specified deadline
+  Type    Reason            Age   From            Message
+  ----    ------            ----  ----            -------
+  Normal  SuccessfulCreate  26m   job-controller  Created pod: 8a7e08b2d268639550cdd6557a92916b8be29a89bda1a28d14e3519e46fltgp
+  Normal  Completed         26m   job-controller  Job completed
 -----
 
 . View version of operator image from auto-generated _InstallPlan_ :
@@ -242,6 +242,12 @@ $ oc get installplan -n rhi-3scale -o json      | jq -r .items[].status.bundleLo
 
 
 quay.io/3scale/rh-3scale-operator-bundle:3scale-amp-2.12-rhel-7-containers-alpha-30878-20220331194554
+-----
+
+. Error in events log:
++
+-----
+$ 3m55s       Normal    BackOff               pod/threescale-operator-controller-manager-v2-967ccc86b-h787b         Back-off pulling image "registry.redhat.io/3scale-amp2/3scale-rhel7-operator@sha256:11136be82ac26cdc1b2b9d7623936b5e518765cf118fe51b427f05a98b1c75b9"
 -----
 
 == Reference
