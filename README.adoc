@@ -144,6 +144,97 @@ The following error message is found in the auto-generated _install plan_:
       type: BundleLookupPending
 -----
 
+.. job when subscription is created:
++
+-----
+$ oc describe job b48a88c0f20a60e1e038df70c6d5c2712b8d84d0f8860903a12161feb1e1dc3
+
+Name:                     b48a88c0f20a60e1e038df70c6d5c2712b8d84d0f8860903a12161feb1e1dc3
+Namespace:                rhi-3scale
+Selector:                 controller-uid=47f77173-2a4f-4593-93a3-3b2cb7f32c90
+Labels:                   controller-uid=47f77173-2a4f-4593-93a3-3b2cb7f32c90
+                          job-name=b48a88c0f20a60e1e038df70c6d5c2712b8d84d0f8860903a12161feb1e1dc3
+Annotations:              batch.kubernetes.io/job-tracking: 
+Parallelism:              1
+Completions:              1
+Completion Mode:          NonIndexed
+Start Time:               Sat, 02 Apr 2022 00:32:58 -0600
+Active Deadline Seconds:  600s
+Pods Statuses:            0 Running / 0 Succeeded / 1 Failed
+Pod Template:
+  Labels:  controller-uid=47f77173-2a4f-4593-93a3-3b2cb7f32c90
+           job-name=b48a88c0f20a60e1e038df70c6d5c2712b8d84d0f8860903a12161feb1e1dc3
+  Init Containers:
+   util:
+    Image:      quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:137866ad70b94281a575ae818fafb4a2ad1cd057555e87688139b0456f932786
+    Port:       <none>
+    Host Port:  <none>
+    Command:
+      /bin/cp
+      -Rv
+      /bin/cpb
+      /util/cpb
+    Requests:
+      cpu:        10m
+      memory:     50Mi
+    Environment:  <none>
+    Mounts:
+      /util from util (rw)
+   pull:
+    Image:      quay.io/3scale/rh-3scale-operator-bundle:3scale-amp-2.12-rhel-7-containers-alpha-30878-20220331194554
+    Port:       <none>
+    Host Port:  <none>
+    Command:
+      /util/cpb
+      /bundle
+    Requests:
+      cpu:        10m
+      memory:     50Mi
+    Environment:  <none>
+    Mounts:
+      /bundle from bundle (rw)
+      /util from util (rw)
+  Containers:
+   extract:
+    Image:      quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:33d8c78741aada4801ee7c03d93b44e03753323b48002eda12b05d07f00c99e6
+    Port:       <none>
+    Host Port:  <none>
+    Command:
+      opm
+      alpha
+      bundle
+      extract
+      -m
+      /bundle/
+      -n
+      rhi-3scale
+      -c
+      b48a88c0f20a60e1e038df70c6d5c2712b8d84d0f8860903a12161feb1e1dc3
+      -z
+    Requests:
+      cpu:     10m
+      memory:  50Mi
+    Environment:
+      CONTAINER_IMAGE:  quay.io/3scale/rh-3scale-operator-bundle:3scale-amp-2.12-rhel-7-containers-alpha-30878-20220331194554
+    Mounts:
+      /bundle from bundle (rw)
+  Volumes:
+   bundle:
+    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:     
+    SizeLimit:  <unset>
+   util:
+    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:     
+    SizeLimit:  <unset>
+Events:
+  Type     Reason            Age   From            Message
+  ----     ------            ----  ----            -------
+  Normal   SuccessfulCreate  2d6h  job-controller  Created pod: b48a88c0f20a60e1e038df70c6d5c2712b8d84d0f8860903a12161feb1569pk
+  Normal   SuccessfulDelete  2d6h  job-controller  Deleted pod: b48a88c0f20a60e1e038df70c6d5c2712b8d84d0f8860903a12161feb1569pk
+  Warning  DeadlineExceeded  2d6h  job-controller  Job was active longer than specified deadline
+-----
+
 . View version of operator image from auto-generated _InstallPlan_ :
 +
 -----
