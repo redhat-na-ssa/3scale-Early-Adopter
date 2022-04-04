@@ -243,3 +243,7 @@ $ oc get installplan -n rhi-3scale -o json      | jq -r .items[].status.bundleLo
 
 quay.io/3scale/rh-3scale-operator-bundle:3scale-amp-2.12-rhel-7-containers-alpha-30878-20220331194554
 -----
+
+== Reference
+
+link:https://docs.google.com/document/d/1Kwic_97NCxZmzi122Dnc57m18YwkWhc1CE1Qr67rVjs/edit#heading=h.xrmfiql8o3uh[3scale Early Access Image Delivery]
