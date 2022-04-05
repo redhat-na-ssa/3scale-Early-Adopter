@@ -244,6 +244,12 @@ $ oc get installplan -n rhi-3scale -o json      | jq -r .items[].status.bundleLo
 quay.io/3scale/rh-3scale-operator-bundle:3scale-amp-2.12-rhel-7-containers-alpha-30878-20220331194554
 -----
 
+. Apply custom _ImageContentSourcePolicy_ :
++
+-----
+$ oc apply -f https://raw.githubusercontent.com/jbride/3scale-deployment/2.12-beta/operators/3scale/quay-registry-icsp.yaml
+-----
+
 . Error in events log:
 +
 -----
