@@ -68,7 +68,7 @@ $ oc set data secret/pull-secret \
 -----
 
 
-. Verify your cluster pull-secret now contains two references to quay image repository (similar to the following) :
+. Verify your cluster pull-secret now contains two references to quay image repositories (similar to the following) :
 +
 -----
 $ oc get secret/pull-secret \
@@ -103,6 +103,11 @@ $ oc apply -f https://raw.githubusercontent.com/jbride/3scale-deployment/2.12-be
 
 
 === 3scale API Manager operator resources
+
+==== Operator Lifecycle Manager (OLM) catalog
+
+Start by creating a new namespace and deploying a custom CatalogSource (defining channels to alpha & beta 3scale images) in this namespace. 
+
 . Create _rhi-apimgmt_ project
 +
 -----
@@ -125,6 +130,8 @@ NAME                                                    READY   STATUS    RESTAR
 threescale-productized-operators-latest-catalog-74l88   1/1     Running   0          17s
 -----
 
+
+==== 3scale Operator
 . Create _operator-group_ :
 +
 -----
@@ -241,7 +248,7 @@ Events:
 $ oc get installplan -n rhi-apimgmt -o json      | jq -r .items[].status.bundleLookups[].path
 
 
-quay.io/3scale/rh-3scale-operator-bundle:3scale-amp-2.12-rhel-7-containers-alpha-30878-20220331194554
+quay.io/3scale/rh-3scale-operator-bundle:3scale-amp-2.12-rhel-7-containers-alpha-52412-20220420173941
 -----
 
 
