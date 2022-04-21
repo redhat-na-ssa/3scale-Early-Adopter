@@ -2,11 +2,11 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
   name: 3scale-operators-beta-subscription
-  namespace: rhi-3scale
+  namespace: rhi-apimgmt
 spec:
   channel: alpha
   installPlanApproval: Automatic
   name: 3scale-operator
   source: threescale-productized-operators-latest-catalog
   startingCSV: ""
-  sourceNamespace: rhi-3scale
+  sourceNamespace: rhi-apimgmt
