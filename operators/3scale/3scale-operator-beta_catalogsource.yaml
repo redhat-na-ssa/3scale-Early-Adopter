@@ -5,6 +5,6 @@ metadata:
   namespace: rhi-3scale
 spec:
   sourceType: grpc
-  image: quay.io/3scale/rh-3scale-operator-index:latest
+  image: quay.io:443/3scale/rh-3scale-operator-index:latest
 #  displayName: "3scale ER Operators"
   publisher: "3scale Engineering Continuous Productization"

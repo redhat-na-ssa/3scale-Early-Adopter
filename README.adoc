@@ -51,15 +51,15 @@ export PRIVATE_QUAY_ACCOUNT_PASSWORD="CHANGE_ME"
 $ oc get secret/pull-secret \
             -n openshift-config \
             --template='{{index .data ".dockerconfigjson" | base64decode}}' \
-            > private-quay-enabled-pull-secret.json
+            > /tmp/private-quay-enabled-pull-secret.json
 -----
 
 . Add credentials of private quay image repository account to pull secret:
 +
 -----
-$ oc registry login --registry="quay.io/3scale" \
+$ oc registry login --registry="quay.io:443/3scale" \
         --auth-basic="$PRIVATE_QUAY_ACCOUNT_NAME:$PRIVATE_QUAY_ACCOUNT_PASSWORD" \
-        --to=private-quay-enabled-pull-secret.json
+        --to=/tmp/private-quay-enabled-pull-secret.json
 -----
 
 . Update pull secret for your OpenShift cluster:
@@ -67,7 +67,7 @@ $ oc registry login --registry="quay.io/3scale" \
 -----
 $ oc set data secret/pull-secret \
         -n openshift-config \
-        --from-file=.dockerconfigjson=private-quay-enabled-pull-secret.json
+        --from-file=.dockerconfigjson=/tmp/private-quay-enabled-pull-secret.json
 -----
 
 
@@ -88,7 +88,7 @@ $ oc get secret/pull-secret \
   }
 }
 {
-  "key": "quay.io/3scale",
+  "key": "quay.io:443/3scale",
   "value": {
     "auth": "xxxxxxxxxxxxxxxxxx"
   }
@@ -97,29 +97,29 @@ $ oc get secret/pull-secret \
 
 
 ==== 3scale API Manager operator resources
-. Create _rhi-3scale_ project
+. Create _rhi-apimgmt_ project
 +
 -----
-$ oc new-project rhi-3scale
+$ oc new-project rhi-apimgmt
 -----
 
 . Create CatalogSource for 3scale beta operator:
 +
 -----
-$ oc create -n rhi-3scale \
+$ oc create -n rhi-apimgmt \
         -f https://raw.githubusercontent.com/jbride/3scale-deployment/2.12-beta/operators/3scale/3scale-operator-beta_catalogsource.yaml 
 -----
 
 .. NOTE:  currently getting the following warning in the events log
 +
 -----
-3m5s        Warning   FailedToUpdateEndpointSlices   service/threescale-productized-operators-latest-catalog     Error updating Endpoint Slices for Service rhi-3scale/threescale-productized-operators-latest-catalog: failed to delete threescale-productized-operators-latest-catalog-f4rmp EndpointSlice for Service rhi-3scale/threescale-productized-operators-latest-catalog: endpointslices.discovery.k8s.io "threescale-productized-operators-latest-catalog-f4rmp" not found
+3m5s        Warning   FailedToUpdateEndpointSlices   service/threescale-productized-operators-latest-catalog     Error updating Endpoint Slices for Service rhi-apimgmt/threescale-productized-operators-latest-catalog: failed to delete threescale-productized-operators-latest-catalog-f4rmp EndpointSlice for Service rhi-apimgmt/threescale-productized-operators-latest-catalog: endpointslices.discovery.k8s.io "threescale-productized-operators-latest-catalog-f4rmp" not found
 -----
 
 . Observe creation of new pod corresponding to CatalogSource:
 +
 -----
-$ oc get pod -n rhi-3scale
+$ oc get pod -n rhi-apimgmt
 
 NAME                                                    READY   STATUS    RESTARTS   AGE
 threescale-productized-operators-latest-catalog-74l88   1/1     Running   0          17s
@@ -128,14 +128,14 @@ threescale-productized-operators-latest-catalog-74l88   1/1     Running   0     
 . Create _operator-group_ :
 +
 -----
-$ oc create -n rhi-3scale \
+$ oc create -n rhi-apimgmt \
         -f https://raw.githubusercontent.com/jbride/3scale-deployment/2.12-beta/operators/3scale/3scale-operator-operatorgroup.yaml
 -----
 
 . Create operator subscription :
 +
 -----
-$ oc create -n rhi-3scale \
+$ oc create -n rhi-apimgmt \
         -f https://raw.githubusercontent.com/jbride/3scale-deployment/2.12-beta/operators/3scale/3scale-operator-subscription.yaml
 -----
 
@@ -149,7 +149,7 @@ Results should be similar to the following:
 +
 -----
 Name:                     8a7e08b2d268639550cdd6557a92916b8be29a89bda1a28d14e3519e465f161
-Namespace:                rhi-3scale
+Namespace:                rhi-apimgmt
 Selector:                 controller-uid=69b8ff51-a3ad-4254-856b-7d0a129a321c
 Labels:                   controller-uid=69b8ff51-a3ad-4254-856b-7d0a129a321c
                           job-name=8a7e08b2d268639550cdd6557a92916b8be29a89bda1a28d14e3519e465f161
@@ -208,7 +208,7 @@ Pod Template:
       -m
       /bundle/
       -n
-      rhi-3scale
+      rhi-apimgmt
       -c
       8a7e08b2d268639550cdd6557a92916b8be29a89bda1a28d14e3519e465f161
       -z
@@ -238,7 +238,7 @@ Events:
 . View version of operator image from auto-generated _InstallPlan_ :
 +
 -----
-$ oc get installplan -n rhi-3scale -o json      | jq -r .items[].status.bundleLookups[].path
+$ oc get installplan -n rhi-apimgmt -o json      | jq -r .items[].status.bundleLookups[].path
 
 
 quay.io/3scale/rh-3scale-operator-bundle:3scale-amp-2.12-rhel-7-containers-alpha-30878-20220331194554

@@ -5,38 +5,38 @@ metadata:
 spec:
   repositoryDigestMirrors:
     - mirrors:
-        - quay.io/3scale/rh-3scale-operator
+        - quay.io:443/3scale/rh-3scale-operator
       source: registry.redhat.io/3scale-amp2/3scale-rhel7-operator
     - mirrors:
-        - quay.io/3scale/rh-apisonator
+        - quay.io:443/3scale/rh-apisonator
       source: registry.redhat.io/3scale-amp2/backend-rhel8
     - mirrors:
-        - quay.io/3scale/rh-porta
+        - quay.io:443/3scale/rh-porta
       source: registry.redhat.io/3scale-amp2/system-rhel7
     - mirrors:
-        - quay.io/3scale/rh-zync
+        - quay.io:443/3scale/rh-zync
       source: registry.redhat.io/3scale-amp2/zync-rhel8
     - mirrors:
-        - quay.io/3scale/rh-memcached
+        - quay.io:443/3scale/rh-memcached
       source: registry.redhat.io/3scale-amp2/memcached-rhel7
     - mirrors:
-        - quay.io/3scale/rh-apicast
+        - quay.io:443/3scale/rh-apicast
       source: registry.redhat.io/3scale-amp2/apicast-gateway-rhel8
     - mirrors:
-        - quay.io/3scale/rh-3scale-operator
+        - quay.io:443/3scale/rh-3scale-operator
       source: registry-proxy.engineering.redhat.com/rh-osbs/3scale-amp2-3scale-rhel7-operator
     - mirrors:
-        - quay.io/3scale/rh-apisonator
+        - quay.io:443/3scale/rh-apisonator
       source: registry-proxy.engineering.redhat.com/rh-osbs/3scale-amp2-backend-rhel8
     - mirrors:
-        - quay.io/3scale/rh-porta
+        - quay.io:443/3scale/rh-porta
       source: registry-proxy.engineering.redhat.com/rh-osbs/3scale-amp2-system-rhel7
     - mirrors:
-        - quay.io/3scale/rh-zync
+        - quay.io:443/3scale/rh-zync
       source: registry-proxy.engineering.redhat.com/rh-osbs/3scale-amp2-zync-rhel8
     - mirrors:
-        - quay.io/3scale/rh-memcached
+        - quay.io:443/3scale/rh-memcached
       source: registry-proxy.engineering.redhat.com/rh-osbs/3scale-amp2-memcached-rhel7
     - mirrors:
-        - quay.io/3scale/rh-apicast
+        - quay.io:443/3scale/rh-apicast
       source: registry-proxy.engineering.redhat.com/rh-osbs/3scale-amp2-apicast-gateway-rhel8
