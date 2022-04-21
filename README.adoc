@@ -1,12 +1,9 @@
-= 3scale-deployment
-
-A dead simple repo to allow scripting of a 3scale deployment using the 3scale Operator.
+= 3scale Early Adapter Deployment
 
 :numbered:
 
-== 2.12-beta Early Adapter
 
-=== Overview
+== Overview
 Red Hat is offering an Early Adapter program to select partners and customers for the 2.12 release of the 3scale API Manager.
 
 Of critical importance in this release is the ability to run the link:https://issues.redhat.com/browse/THREESCALE-5725[API Manager in a FIPS enabled] OpenShift cluster.
@@ -15,7 +12,7 @@ Of critical importance in this release is the ability to run the link:https://is
 The container images for the beta release of the API Manager are managed in a private `quay.io` organization.
 This document will guide you through the procedure to access these beta release images and provision the API Manager.
 
-=== Pre-requisites
+== Pre-requisites
 
 
 . OpenShift Minimum Requirements:
@@ -42,9 +39,9 @@ export PRIVATE_QUAY_ACCOUNT_PASSWORD="CHANGE_ME"
 
 
 
-=== Procedure
+== Procedure
 
-==== OpenShift Pull Secret
+=== OpenShift Pull Secret
 . Download your existing OpenShift pull-secret to a temp file called _private-quay-enabled-pull-secret.json_:
 +
 -----
@@ -96,7 +93,16 @@ $ oc get secret/pull-secret \
 -----
 
 
-==== 3scale API Manager operator resources
+=== Custom ImageContentSourcePolicy
+
+. Apply custom _ImageContentSourcePolicy_ :
++
+-----
+$ oc apply -f https://raw.githubusercontent.com/jbride/3scale-deployment/2.12-beta/operators/3scale/quay-registry-icsp.yaml
+-----
+
+
+=== 3scale API Manager operator resources
 . Create _rhi-apimgmt_ project
 +
 -----
@@ -108,12 +114,6 @@ $ oc new-project rhi-apimgmt
 -----
 $ oc create -n rhi-apimgmt \
         -f https://raw.githubusercontent.com/jbride/3scale-deployment/2.12-beta/operators/3scale/3scale-operator-beta_catalogsource.yaml 
------
-
-.. NOTE:  currently getting the following warning in the events log
-+
------
-3m5s        Warning   FailedToUpdateEndpointSlices   service/threescale-productized-operators-latest-catalog     Error updating Endpoint Slices for Service rhi-apimgmt/threescale-productized-operators-latest-catalog: failed to delete threescale-productized-operators-latest-catalog-f4rmp EndpointSlice for Service rhi-apimgmt/threescale-productized-operators-latest-catalog: endpointslices.discovery.k8s.io "threescale-productized-operators-latest-catalog-f4rmp" not found
 -----
 
 . Observe creation of new pod corresponding to CatalogSource:
@@ -244,11 +244,7 @@ $ oc get installplan -n rhi-apimgmt -o json      | jq -r .items[].status.bundleL
 quay.io/3scale/rh-3scale-operator-bundle:3scale-amp-2.12-rhel-7-containers-alpha-30878-20220331194554
 -----
 
-. Apply custom _ImageContentSourcePolicy_ :
-+
------
-$ oc apply -f https://raw.githubusercontent.com/jbride/3scale-deployment/2.12-beta/operators/3scale/quay-registry-icsp.yaml
------
+
 
 . Error in events log:
 +
