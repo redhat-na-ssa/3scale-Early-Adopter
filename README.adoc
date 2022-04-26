@@ -101,6 +101,12 @@ $ oc get secret/pull-secret \
 $ oc apply -f https://raw.githubusercontent.com/jbride/3scale-deployment/2.12-beta/operators/3scale/quay-registry-icsp.yaml
 -----
 
+. Optional:  Debug ImageContentSourcePolicy
++
+Please follow the procedure as described in the link:https://docs.openshift.com/container-platform/4.10/openshift_images/image-configuration.html#images-configuration-registry-mirror_image-configuration[Configuring image registry repository mirroring] section of the OpenShift documentation.
+
+.. podman pull quay.io:443/3scale/rh-3scale-operator-index:3scale2.12.dev
+
 
 === 3scale API Manager operator resources
 
@@ -145,6 +151,8 @@ $ oc create -n rhi-apimgmt \
 $ oc create -n rhi-apimgmt \
         -f https://raw.githubusercontent.com/jbride/3scale-deployment/2.12-beta/operators/3scale/3scale-operator-subscription.yaml
 -----
+
+.. Wait about 1 minute (to allow for job to start)
 
 .. Verify Operator Lifecycle Manager job that installs 3scale operator:
 +
@@ -223,7 +231,7 @@ Pod Template:
       cpu:     10m
       memory:  50Mi
     Environment:
-      CONTAINER_IMAGE:  quay.io/3scale/rh-3scale-operator-bundle:3scale-amp-2.12-rhel-7-containers-alpha-48872-20220404110605
+      CONTAINER_IMAGE:  registry-proxy.engineering.redhat.com/rh-osbs/3scale-amp2-3scale-rhel7-operator-metadata@sha256:1039ff21c0cfb825a8a772925281df83304842af5df37ad2138562dbb99d77cc
     Mounts:
       /bundle from bundle (rw)
   Volumes:
@@ -248,16 +256,62 @@ Events:
 $ oc get installplan -n rhi-apimgmt -o json      | jq -r .items[].status.bundleLookups[].path
 
 
-quay.io/3scale/rh-3scale-operator-bundle:3scale-amp-2.12-rhel-7-containers-alpha-52412-20220420173941
+registry-proxy.engineering.redhat.com/rh-osbs/3scale-amp2-3scale-rhel7-operator-metadata@sha256:1039ff21c0cfb825a8a772925281df83304842af5df37ad2138562dbb99d77cc
 -----
 
-
-
-. Error in events log:
+. There should now be two running pods similar to the following:
 +
 -----
-$ 3m55s       Normal    BackOff               pod/threescale-operator-controller-manager-v2-967ccc86b-h787b         Back-off pulling image "registry.redhat.io/3scale-amp2/3scale-rhel7-operator@sha256:11136be82ac26cdc1b2b9d7623936b5e518765cf118fe51b427f05a98b1c75b9"
+$ oc get pods
+
+
+
+NAME                                                              READY   STATUS      RESTARTS   AGE
+211553c204e6db2c5cc0ab5bfa8dcf165c9e2a35efe3566187297cf90f9wrg2   0/1     Completed   0          3m28s
+threescale-operator-controller-manager-v2-6458b64f67-cfbl7        1/1     Running     0          2m59s
+threescale-productized-operators-latest-catalog-5f9wh             1/1     Running     0          6m10s
 -----
+
+== Install 3scale Resources
+
+. Authenticate into your OpenShift cluster admin console as a _cluster-admin_
+. Navigate to the _rhi-apimgmt_ namespace and view _Installed Operators_
++
+image::docs/images/installed_beta_3scale_operator.png[]
+
+. Create an APIManager resource:app-name:
++
+image::docs/images/create_api_mgr.png[]
+
+. After successful installation, a listing of all API Manager related pods should be similar to the following:
++
+-----
+$ oc get pods -n rhi-apimgr
+
+
+
+NAME                                                         READY   STATUS    RESTARTS      AGE
+apicast-production-2-x884f                                   1/1     Running   0             5m52s
+apicast-staging-1-gcmpc                                      1/1     Running   0             19m
+backend-cron-2-ck228                                         1/1     Running   0             11m
+backend-listener-1-sn7jg                                     1/1     Running   0             19m
+backend-redis-2-s7bcb                                        1/1     Running   0             14m
+backend-worker-2-bg55c                                       1/1     Running   0             11m
+system-app-2-mjj65                                           3/3     Running   0             9m23s
+system-memcache-1-qjmkx                                      1/1     Running   0             19m
+system-mysql-1-bxfmz                                         1/1     Running   0             19m
+system-redis-2-dtlk4                                         1/1     Running   0             12m
+system-sidekiq-2-xzdbn                                       1/1     Running   0             13m
+system-sphinx-2-9jzpd                                        1/1     Running   0             6m54s
+threescale-operator-controller-manager-v2-6458b64f67-cfbl7   1/1     Running   0             102m
+threescale-productized-operators-latest-catalog-5f9wh        1/1     Running   0             105m
+zync-1-xl9jz                                                 1/1     Running   0             19m
+zync-database-1-55tzr                                        1/1     Running   0             19m
+zync-que-1-h6rvx                                             1/1     Running   2 (19m ago)   19m
+
+-----
+
+
 
 == Reference
 
