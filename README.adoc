@@ -1,10 +1,10 @@
-= 3scale Early Adapter Deployment
+= 3scale Early Adopter Deployment
 
 :numbered:
 
 
 == Overview
-Red Hat is offering an Early Adapter program to select partners and customers for the 2.12 release of the 3scale API Manager.
+Red Hat is offering an Early Adopter program to select partners and customers for the 2.12 release of the 3scale API Manager.
 
 Of critical importance in this release is the ability to run the link:https://issues.redhat.com/browse/THREESCALE-5725[API Manager in a FIPS enabled] OpenShift cluster.
 
