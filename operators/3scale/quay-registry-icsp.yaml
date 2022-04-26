@@ -23,6 +23,12 @@ spec:
         - quay.io:443/3scale/rh-apicast
       source: registry.redhat.io/3scale-amp2/apicast-gateway-rhel8
     - mirrors:
+        - quay.io:443/3scale/rh-3scale-operator-bundle
+      source: registry-proxy.engineering.redhat.com/rh-osbs/3scale-amp2-3scale-rhel7-operator-metadata
+    - mirrors:
+        - quay.io:443/3scale/rh-3scale-operator-bundle
+      source: registry.redhat.io/3scale-amp2/3scale-rhel7-operator-metadata
+    - mirrors:
         - quay.io:443/3scale/rh-3scale-operator
       source: registry-proxy.engineering.redhat.com/rh-osbs/3scale-amp2-3scale-rhel7-operator
     - mirrors:
@@ -40,3 +46,24 @@ spec:
     - mirrors:
         - quay.io:443/3scale/rh-apicast
       source: registry-proxy.engineering.redhat.com/rh-osbs/3scale-amp2-apicast-gateway-rhel8
+    - mirrors:
+        - quay.io:443/3scale/rh-3scale-operator-bundle
+      source: registry-proxy.engineering.redhat.com/rh-osbs/3scale-mas-3scale-rhel7-operator-metadata
+    - mirrors:
+        - quay.io:443/3scale/rh-3scale-operator
+      source: registry-proxy.engineering.redhat.com/rh-osbs/3scale-mas-3scale-rhel7-operator
+    - mirrors:
+        - quay.io:443/3scale/rh-apisonator
+      source: registry-proxy.engineering.redhat.com/rh-osbs/3scale-mas-backend-rhel8
+    - mirrors:
+        - quay.io:443/3scale/rh-porta
+      source: registry-proxy.engineering.redhat.com/rh-osbs/3scale-mas-system-rhel7
+    - mirrors:
+        - quay.io:443/3scale/rh-zync
+      source: registry-proxy.engineering.redhat.com/rh-osbs/3scale-mas-zync-rhel8
+    - mirrors:
+        - quay.io:443/3scale/rh-memcached
+      source: registry-proxy.engineering.redhat.com/rh-osbs/3scale-mas-memcached-rhel7
+    - mirrors:
+        - quay.io:443/3scale/rh-apicast
+      source: registry-proxy.engineering.redhat.com/rh-osbs/3scale-mas-apicast-gateway-rhel8

@@ -4,9 +4,9 @@ metadata:
   name: 3scale-operators-beta-subscription
   namespace: rhi-apimgmt
 spec:
-  channel: alpha
+  channel: threescale-2.12-dev
   installPlanApproval: Automatic
   name: 3scale-operator
   source: threescale-productized-operators-latest-catalog
-  startingCSV: ""
+  startingCSV: 3scale-operator.v0.9.0
   sourceNamespace: rhi-apimgmt
