@@ -314,5 +314,3 @@ zync-que-1-h6rvx                                             1/1     Running   2
 
 
 == Reference
-
-link:https://docs.google.com/document/d/1Kwic_97NCxZmzi122Dnc57m18YwkWhc1CE1Qr67rVjs/edit#heading=h.xrmfiql8o3uh[3scale Early Access Image Delivery]
