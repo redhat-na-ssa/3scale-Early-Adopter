@@ -23,6 +23,9 @@ This document will guide you through the procedure to access these beta release 
 ... 5 PVCs of 5 GBs each of RWO
 ... 1 PVC of 5 GBs of RWX
 .. FIPS enabled
++
+NOTE: The appendix of this document includes a short tutorial on how to validate FIPS enablement of your OCP cluster.
+
 .. Suggested:  wildcard certificate from known Certificate Authority for application routes exposed through OpenShift
 
 . TO-DO: Demonstrate how to validate that FIPS is enabled
@@ -316,3 +319,35 @@ zync-que-1-h6rvx                                             1/1     Running   2
 == Reference
 
 link:https://docs.google.com/document/d/1Kwic_97NCxZmzi122Dnc57m18YwkWhc1CE1Qr67rVjs/edit#heading=h.xrmfiql8o3uh[3scale Early Access Image Delivery]
+
+== Appendix
+
+=== Validate OCP cluster is FIPS enabled:
+
+. List nodes:
++
+-----
+$ oc get nodes
+-----
+
+. Gain a debug session into any node of your cluster:
++
+-----
+$ oc debug node/<node>
+-----
+
+. Once in the node's terminal, there are two options for validating FIPS compliance.
++
+Both of the below options should return a value of: 1
+
+. Option 1:
++
+-----
+# cat /proc/sys/crypto/fips_enabled
+-----
+
+. Option 2:
++
+-----
+# sysctl crypto.fips_enabled
+-----
