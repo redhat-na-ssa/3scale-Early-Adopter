@@ -28,9 +28,6 @@ NOTE: The appendix of this document includes a short tutorial on how to validate
 
 .. Suggested:  wildcard certificate from known Certificate Authority for application routes exposed through OpenShift
 
-. TO-DO: Demonstrate how to validate that FIPS is enabled
-
-
 . Contact 3scale engineering team or your Red Hat SA for the credentials to the private quay.io image repository.
 
 . Based on the credentials provided, set the following environment variables in your shell:
