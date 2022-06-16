@@ -105,7 +105,7 @@ $ oc apply -f https://raw.githubusercontent.com/jbride/3scale-deployment/2.12-be
 +
 Please follow the procedure as described in the link:https://docs.openshift.com/container-platform/4.10/openshift_images/image-configuration.html#images-configuration-registry-mirror_image-configuration[Configuring image registry repository mirroring] section of the OpenShift documentation.
 
-.. podman pull quay.io:443/3scale/rh-3scale-operator-index:3scale2.12.dev
+.. podman pull quay.io:443/3scale/rh-3scale-operator-index:3scale.alpha.4.8
 
 
 === 3scale API Manager operator resources
