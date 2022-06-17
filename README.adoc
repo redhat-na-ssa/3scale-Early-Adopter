@@ -41,6 +41,16 @@ export PRIVATE_QUAY_ACCOUNT_PASSWORD="CHANGE_ME"
 
 == Procedure
 
+=== New namespace
+
+Start by creating a new namespace where your 3scale API Manager will be deployed to.
+
+. Create _rhi-apimgmt_ project
++
+-----
+$ oc new-project rhi-apimgmt
+-----
+
 === OpenShift Pull Secret
 . Download your existing OpenShift pull-secret to a temp file called _private-quay-enabled-pull-secret.json_:
 +
@@ -92,6 +102,13 @@ $ oc get secret/pull-secret \
 }
 -----
 
+. Optional:  Copy _pull-secret_ to _rhi-apimgmt_ namespace:
++
+With OpenShift 4.10, its been observed that the _pull-secret_ needs to be included in the _rhi-apimgmt_ namespace:
++
+-----
+$ oc get secret pull-secret --namespace=openshift-config -o yaml | sed 's/namespace: .*/namespace: rhi-apimgmt/' | oc apply -f -
+-----
 
 === Custom ImageContentSourcePolicy
 
@@ -112,13 +129,7 @@ Please follow the procedure as described in the link:https://docs.openshift.com/
 
 ==== Operator Lifecycle Manager (OLM) catalog
 
-Start by creating a new namespace and deploying a custom CatalogSource (defining channels to alpha & beta 3scale images) in this namespace. 
-
-. Create _rhi-apimgmt_ project
-+
------
-$ oc new-project rhi-apimgmt
------
+Deploy a custom CatalogSource (defining channels to alpha & beta 3scale images) in this namespace. 
 
 . Create CatalogSource for 3scale beta operator:
 +
