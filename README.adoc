@@ -16,19 +16,22 @@ This document will guide you through the procedure to access these beta release 
 
 
 . OpenShift Minimum Requirements:
-.. Version:  4.10
-.. RAM:  48 GB
-.. CPU:  16 cores
-.. Filesystem:
+.. *Version*:  4.10
+.. *RAM*:  48 GB
+.. *CPU*:  16 cores
+.. *Filesystem*:
 ... 5 PVCs of 5 GBs each of RWO
 ... 1 PVC of 5 GBs of RWX
-.. FIPS enabled
++
+NOTE:  At this time, use of AWS S3 is problematic.  Please use _Openshift Data Foundations_ operator to create RWX storage system.
+
+.. *FIPS enabled*
 +
 NOTE: The appendix of this document includes a short tutorial on how to validate FIPS enablement of your OCP cluster.
 
-.. Suggested:  wildcard certificate from known Certificate Authority for application routes exposed through OpenShift
+.. *Suggested*:  wildcard certificate from known Certificate Authority (ie: LetsEncrypt) for application routes exposed through OpenShift
 
-. Contact 3scale engineering team or your Red Hat SA for the credentials to the private quay.io image repository.
+. Contact your Red Hat NAPS SA for the credentials to the private quay.io image repository.
 
 . Based on the credentials provided, set the following environment variables in your shell:
 +
@@ -293,6 +296,14 @@ image::docs/images/installed_beta_3scale_operator.png[]
 . Create an APIManager resource:app-name:
 +
 image::docs/images/create_api_mgr.png[]
+
+. Modify system-sphinx deployment config.
++
+Add the following env variable:
++
+-----
+SECRET_KEY_BASE=rails/32947
+-----
 
 . After successful installation, a listing of all API Manager related pods should be similar to the following:
 +
