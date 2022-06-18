@@ -1,3 +1,5 @@
+:gitdomain: redhat-na-ssa
+
 = 3scale Early Adopter Deployment
 
 :numbered:
@@ -139,8 +141,9 @@ $ oc get secret pull-secret --namespace=openshift-config -o yaml | sed 's/namesp
 
 . Apply custom _ImageContentSourcePolicy_ :
 +
+[code, subs="attributes"]
 -----
-$ oc apply -f https://raw.githubusercontent.com/jbride/3scale-deployment/2.12-beta/operators/3scale/quay-registry-icsp.yaml
+$ oc apply -f https://raw.githubusercontent.com/{gitdomain}/3scale-deployment/2.12-beta/operators/3scale/quay-registry-icsp.yaml
 -----
 
 . Optional:  Debug ImageContentSourcePolicy
@@ -158,9 +161,10 @@ Deploy a custom CatalogSource (defining channels to alpha & beta 3scale images) 
 
 . Create CatalogSource for 3scale beta operator:
 +
+[code, subs="attributes"]
 -----
 $ oc create -n rhi-apimgmt \
-        -f https://raw.githubusercontent.com/jbride/3scale-deployment/2.12-beta/operators/3scale/3scale-operator-beta_catalogsource.yaml 
+        -f https://raw.githubusercontent.com/{gitdomain}/3scale-deployment/2.12-beta/operators/3scale/3scale-operator-beta_catalogsource.yaml 
 -----
 
 . Observe creation of new pod corresponding to CatalogSource:
@@ -176,16 +180,18 @@ threescale-productized-operators-latest-catalog-74l88   1/1     Running   0     
 ==== 3scale Operator
 . Create _operator-group_ :
 +
+[code, subs="attributes"]
 -----
 $ oc create -n rhi-apimgmt \
-        -f https://raw.githubusercontent.com/jbride/3scale-deployment/2.12-beta/operators/3scale/3scale-operator-operatorgroup.yaml
+        -f https://raw.githubusercontent.com/{gitdomain}/3scale-deployment/2.12-beta/operators/3scale/3scale-operator-operatorgroup.yaml
 -----
 
 . Create operator subscription :
 +
+[code, subs="attributes"]
 -----
 $ oc create -n rhi-apimgmt \
-        -f https://raw.githubusercontent.com/jbride/3scale-deployment/2.12-beta/operators/3scale/3scale-operator-subscription.yaml
+        -f https://raw.githubusercontent.com/{gitdomain}/3scale-deployment/2.12-beta/operators/3scale/3scale-operator-subscription.yaml
 -----
 
 .. Wait about 1 minute (to allow for job to start)
@@ -315,9 +321,28 @@ threescale-productized-operators-latest-catalog-5f9wh             1/1     Runnin
 +
 image::docs/images/installed_beta_3scale_operator.png[]
 
-. Create an APIManager resource:app-name:
+. Create an APIManager resource: 
 +
-image::docs/images/create_api_mgr.png[]
+-----
+apiVersion: apps.3scale.net/v1alpha1
+kind: APIManager
+metadata:
+  name: apimanager
+spec:
+  wildcardDomain: apps.<CHANGE ME>
+  system:
+    fileStorage:
+      persistentVolumeClaim:
+        storageClassName: ocs-storagecluster-cephfs
+    redisResources:
+      limits:
+        memory: 6Gi
+  backend:
+    redisResources:
+      limits:
+        memory: 6Gi
+
+-----
 
 . Modify system-sphinx deployment config.
 +
