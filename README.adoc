@@ -346,10 +346,12 @@ spec:
 
 . Modify system-sphinx deployment config.
 +
-Add the following env variable:
+Manually Add the following env variables:
 +
 -----
 SECRET_KEY_BASE=rails/32947
+
+FILE_UPLOAD_STORAGE=s3
 -----
 
 . After successful installation, a listing of all API Manager related pods should be similar to the following:
