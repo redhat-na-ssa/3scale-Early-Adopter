@@ -138,6 +138,12 @@ With OpenShift 4.10, its been observed that the _pull-secret_ needs to be includ
 $ oc get secret pull-secret --namespace=openshift-config -o yaml | sed 's/namespace: .*/namespace: rhi-apimgmt/' | oc apply -f -
 -----
 
+. With this pull-secret in place, your OCP cluster will now be able to pull images such as the following:
++
+-----
+quay.io:443/3scale/rh-3scale-operator-index:3scale.alpha.4.8
+-----
+
 === Custom ImageContentSourcePolicy
 
 . Apply custom _ImageContentSourcePolicy_ :
@@ -146,13 +152,6 @@ $ oc get secret pull-secret --namespace=openshift-config -o yaml | sed 's/namesp
 -----
 $ oc apply -f https://raw.githubusercontent.com/{gitdomain}/3scale-deployment/2.12-beta/operators/3scale/quay-registry-icsp.yaml
 -----
-
-. Optional:  Debug ImageContentSourcePolicy
-+
-Please follow the procedure as described in the link:https://docs.openshift.com/container-platform/4.10/openshift_images/image-configuration.html#images-configuration-registry-mirror_image-configuration[Configuring image registry repository mirroring] section of the OpenShift documentation.
-
-.. podman pull quay.io:443/3scale/rh-3scale-operator-index:3scale.alpha.4.8
-
 
 === 3scale API Manager operator resources
 
