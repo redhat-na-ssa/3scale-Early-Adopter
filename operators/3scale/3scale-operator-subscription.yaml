@@ -4,7 +4,7 @@ metadata:
   name: 3scale-operators-beta-subscription
   namespace: rhi-apimgmt
 spec:
-  channel: threescale-2.12-dev
+  channel: alpha
   installPlanApproval: Automatic
   name: 3scale-operator
   source: threescale-productized-operators-latest-catalog
