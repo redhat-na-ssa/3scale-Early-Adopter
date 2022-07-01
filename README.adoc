@@ -14,7 +14,7 @@ Of critical importance in this release is the ability to run the link:https://is
 The container images for the beta release of the API Manager are managed in a private `quay.io` organization.
 This document will guide you through the procedure to access these beta release images and provision the API Manager.
 
-=== Support Details
+=== Release & Support Details
 
 *18 June 2022*
 
@@ -26,7 +26,9 @@ This document will guide you through the procedure to access these beta release 
 
 . Support exceptions to use that CR release (prior to 2.13 with FIPs going GA) will be very few.
 
-. *It's highly recommended that the purpose of installation of a CR release of API Manager be for demo and/or test only!!!!  Do not expect to use in production nor expect to receive support from Red Hat using the CR release.  As a Red Hat SA or consultant, you should be preparred to support your customers / partners with this CR release.*
+. *It's highly recommended that the purpose of installation of a CR release of API Manager be for demo and/or test only!!!!  Do not expect to use in production nor expect to receive production support from Red Hat using this candidate release.*
+
+. *If you are a Red Hat SA or consultant, you should be preparred to support your customers / partners with this CR release.*
 
 
 === Known Issues
