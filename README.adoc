@@ -35,7 +35,6 @@ This document will guide you through the procedure to access these beta release 
 .. Markdown pages in dev portal probably don't work
 .. avatars, invoices and other attachments stored in S3 (I have a hope for this at least, but is a risk area)
 .. some ActiveMerchant payment gateways require MD5 so they may fail
-. Developer Portal CMS doesn't persist
 
 == Pre-requisites
 
