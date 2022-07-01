@@ -54,9 +54,11 @@ NOTE: The appendix of this document includes a short tutorial on how to validate
 
 .. *Suggested*:  wildcard certificate from known Certificate Authority (ie: LetsEncrypt) for application routes exposed through OpenShift
 
-. Contact your Red Hat NAPS SA for the credentials to the private quay.io image repository.
+. Credentials to private _quay.io:443/3scale_ registry
 
-. Based on the credentials provided, set the following environment variables in your shell:
+.. Contact your Red Hat NAPS SA for the credentials to the private quay.io image repository.
+
+.. Based on the credentials provided, set the following environment variables in your shell:
 +
 -----
 export PRIVATE_QUAY_ACCOUNT_NAME="CHANGE_ME"
