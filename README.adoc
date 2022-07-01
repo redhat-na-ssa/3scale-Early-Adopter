@@ -357,6 +357,14 @@ spec:
 
 -----
 
+. View list of tags of one of the auto-generated image streams:
++
+-----
+$ oc get is amp-system -o json | jq -r '.spec.tags[].from.name'
+
+registry.redhat.io/3scale-amp2/system-rhel7@sha256:afc40ae035b75e0f7ac6942bd35e9d7c8906ec6d2c45d53c71308cecbd3012ad
+-----
+
 
 . After successful installation, a listing of all API Manager related pods should be similar to the following:
 +
