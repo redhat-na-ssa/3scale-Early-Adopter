@@ -314,6 +314,19 @@ threescale-operator-controller-manager-v2-6458b64f67-cfbl7        1/1     Runnin
 threescale-productized-operators-latest-catalog-5f9wh             1/1     Running     0          6m10s
 -----
 
+. And there should be a set of configmaps similar to the following:app-name:
++
+-----
+$ oc get cm
+
+
+NAME                                                              DATA   AGE
+82355b9c.3scale.net                                               0      10m
+a6b31e4d6da3e2d23e21cba2df7d9be47f7b02a8ec36697acec0fb47bb0fa2c   15     11m
+kube-root-ca.crt                                                  1      34m
+openshift-service-ca.crt                                          1      34m
+-----
+
 == Install 3scale Resources
 
 . Authenticate into your OpenShift cluster admin console as a _cluster-admin_
@@ -344,15 +357,6 @@ spec:
 
 -----
 
-. Modify system-sphinx deployment config.
-+
-Manually Add the following env variables:
-+
------
-SECRET_KEY_BASE=rails/32947
-
-FILE_UPLOAD_STORAGE=s3
------
 
 . After successful installation, a listing of all API Manager related pods should be similar to the following:
 +
@@ -381,6 +385,10 @@ zync-database-1-55tzr                                        1/1     Running   0
 zync-que-1-h6rvx                                             1/1     Running   2 (19m ago)   19m
 
 -----
+
+. If using ODF, you'll see storage utilization similar to the following: 
++
+image::docs/images/odf_storage.png[]
 
 
 
