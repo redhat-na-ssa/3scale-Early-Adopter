@@ -326,10 +326,16 @@ spec:
 
 -----
 
-. View list of tags of one of the auto-generated image streams:
+. Watch all events in real-time occurring in _rhi-apimgmt_ namespace:
 +
 -----
-$ oc get is amp-system -o json | jq -r '.spec.tags[].from.name'
+$ oc get events -n rhi-apimgmt -w
+-----
+
+. In a second terminal window, wiew list of tags of one of the auto-generated image streams:
++
+-----
+$ oc get is amp-system -n rhi-apimgmt -o json | jq -r '.spec.tags[].from.name'
 
 registry.redhat.io/3scale-amp2/system-rhel7@sha256:afc40ae035b75e0f7ac6942bd35e9d7c8906ec6d2c45d53c71308cecbd3012ad
 -----
