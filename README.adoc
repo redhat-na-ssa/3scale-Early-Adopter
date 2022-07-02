@@ -229,55 +229,17 @@ Pods Statuses:            0 Running / 1 Succeeded / 0 Failed
 Pod Template:
   Labels:  controller-uid=69b8ff51-a3ad-4254-856b-7d0a129a321c
            job-name=8a7e08b2d268639550cdd6557a92916b8be29a89bda1a28d14e3519e465f161
-  Init Containers:
-   util:
-    Image:      quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:137866ad70b94281a575ae818fafb4a2ad1cd057555e87688139b0456f932786
-    Port:       <none>
-    Host Port:  <none>
-    Command:
-      /bin/cp
-      -Rv
-      /bin/cpb
-      /util/cpb
-    Requests:
-      cpu:        10m
-      memory:     50Mi
-    Environment:  <none>
-    Mounts:
-      /util from util (rw)
-   pull:
-    Image:      quay.io/3scale/rh-3scale-operator-bundle:3scale-amp-2.12-rhel-7-containers-alpha-48872-20220404110605
-    Port:       <none>
-    Host Port:  <none>
-    Command:
-      /util/cpb
-      /bundle
-    Requests:
-      cpu:        10m
-      memory:     50Mi
-    Environment:  <none>
-    Mounts:
-      /bundle from bundle (rw)
-      /util from util (rw)
+
+  ...
+
   Containers:
    extract:
     Image:      quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:33d8c78741aada4801ee7c03d93b44e03753323b48002eda12b05d07f00c99e6
     Port:       <none>
     Host Port:  <none>
-    Command:
-      opm
-      alpha
-      bundle
-      extract
-      -m
-      /bundle/
-      -n
-      rhi-apimgmt
-      -c
-      8a7e08b2d268639550cdd6557a92916b8be29a89bda1a28d14e3519e465f161
-      -z
-    Requests:
-      cpu:     10m
+
+   ...
+
       memory:  50Mi
     Environment:
       CONTAINER_IMAGE:  registry-proxy.engineering.redhat.com/rh-osbs/3scale-amp2-3scale-rhel7-operator-metadata@sha256:1039ff21c0cfb825a8a772925281df83304842af5df37ad2138562dbb99d77cc
@@ -321,7 +283,7 @@ threescale-operator-controller-manager-v2-6458b64f67-cfbl7        1/1     Runnin
 threescale-productized-operators-latest-catalog-5f9wh             1/1     Running     0          6m10s
 -----
 
-. And there should be a set of configmaps similar to the following:app-name:
+. And there should be a set of configmaps similar to the following:
 +
 -----
 $ oc get cm
