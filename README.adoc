@@ -155,6 +155,11 @@ quay.io:443/3scale/rh-3scale-operator-index:3scale.alpha.4.8
 $ oc apply -f https://raw.githubusercontent.com/{gitdomain}/3scale-deployment/2.12-beta/operators/3scale/quay-registry-icsp.yaml
 -----
 
+The 3scale beta operator currently references other 3scale related images that are behind a Red Hat VPN.
+Subsequently, those beta 3scale images are also currently mirrored to a private Quay organization (available via the credentials in your custom pull-secret).
+
+This custom ImageContentSourcePolicy provides a mapping between 3scale images names with  Red Hat VPN URLS and equivalents in the private quay org.
+
 === 3scale API Manager operator resources
 
 ==== Operator Lifecycle Manager (OLM) catalog
