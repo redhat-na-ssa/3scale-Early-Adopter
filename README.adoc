@@ -183,6 +183,32 @@ NAME                                                    READY   STATUS    RESTAR
 threescale-productized-operators-latest-catalog-74l88   1/1     Running   0          17s
 -----
 
+. There should now be two _3scale-operator_ package manifests in two different namespaces.
++
+Compare the _channels_ made available by each of the package manifests:
++
+-----
+$ oc get packagemanifests 3scale-operator -n openshift-marketplace -o json | jq .status.channels[].name
+
+"threescale-2.11"
+
+
+
+$ oc get packagemanifests 3scale-operator -n rhi-apimgmt -o json | jq .status.channels[].name
+
+"alpha"
+"threescale-2.10"
+"threescale-2.11"
+"threescale-2.12"
+"threescale-2.6"
+"threescale-2.7"
+"threescale-2.8"
+"threescale-2.9"
+"threescale-mas"
+-----
+
+For the purpose of the 3scale Early Adopter bits, you will be using the _alpha_ channel as made available by the _3scale-operator_ packagemanifest in the _rhi-apimgmt_ namespace.
+
 
 ==== 3scale Operator
 . Create _operator-group_ :
