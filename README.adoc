@@ -162,7 +162,7 @@ This custom ImageContentSourcePolicy provides a mapping between 3scale images na
 
 This ImageContentSourcePolicy is required for installation of both the beta operator as well as the 3scale API Manager itself (which is installed by the operator).
 
-Without the ImageContentSourcePolicy, installation of the operator will fail with an error similar to the following: 
+Without the ImageContentSourcePolicy, installation of the operator (discussed in the next section) will fail with an error similar to the following: 
 
 -----
 Failed to pull image "registry-proxy.engineering.redhat.com/rh-osbs/3scale-amp2-3scale-rhel7-operator-metadata@sha256:bf85194ec083a2c03b799597029f390ad42bae621b416a2f235a3c780f53cd27"
