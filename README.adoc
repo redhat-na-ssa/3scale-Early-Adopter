@@ -160,6 +160,14 @@ Subsequently, those beta 3scale images are also currently mirrored to a private 
 
 This custom ImageContentSourcePolicy provides a mapping between 3scale images names with  Red Hat VPN URLS and equivalents in the private quay org.
 
+This ImageContentSourcePolicy is required for installation of both the beta operator as well as the 3scale API Manager itself (which is installed by the operator).
+
+Without the ImageContentSourcePolicy, installation of the operator will fail with error similar to the following: 
+
+-----
+Failed to pull image "registry-proxy.engineering.redhat.com/rh-osbs/3scale-amp2-3scale-rhel7-operator-metadata@sha256:bf85194ec083a2c03b799597029f390ad42bae621b416a2f235a3c780f53cd27"
+-----
+
 === 3scale API Manager operator resources
 
 ==== Operator Lifecycle Manager (OLM) catalog
@@ -182,6 +190,19 @@ $ oc get pod -n rhi-apimgmt
 NAME                                                    READY   STATUS    RESTARTS   AGE
 threescale-productized-operators-latest-catalog-74l88   1/1     Running   0          17s
 -----
+
+
+
+
+==== 3scale Operator
+. Create _operator-group_ :
++
+[code, subs="attributes"]
+-----
+$ oc create -n rhi-apimgmt \
+        -f https://raw.githubusercontent.com/{gitdomain}/3scale-deployment/2.12-beta/operators/3scale/3scale-operator-operatorgroup.yaml
+-----
+
 
 . There should now be two _3scale-operator_ package manifests in two different namespaces.
 +
@@ -208,16 +229,6 @@ $ oc get packagemanifests 3scale-operator -n rhi-apimgmt -o json | jq .status.ch
 -----
 
 For the purpose of the 3scale Early Adopter bits, you will be using the _alpha_ channel as made available by the _3scale-operator_ packagemanifest in the _rhi-apimgmt_ namespace.
-
-
-==== 3scale Operator
-. Create _operator-group_ :
-+
-[code, subs="attributes"]
------
-$ oc create -n rhi-apimgmt \
-        -f https://raw.githubusercontent.com/{gitdomain}/3scale-deployment/2.12-beta/operators/3scale/3scale-operator-operatorgroup.yaml
------
 
 . Create operator subscription :
 +
