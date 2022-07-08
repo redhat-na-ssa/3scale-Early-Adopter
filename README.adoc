@@ -227,7 +227,7 @@ $ oc get packagemanifests 3scale-operator -n rhi-apimgmt -o json | jq .status.ch
 "threescale-2.9"
 "threescale-mas"
 -----
-
++
 For the purpose of the 3scale Early Adopter bits, you will be using the _alpha_ channel as made available by the _3scale-operator_ packagemanifest in the _rhi-apimgmt_ namespace.
 
 . Create operator subscription :
