@@ -16,18 +16,10 @@ This document will guide you through the procedure to access these beta release 
 
 === Release & Support Details
 
-*18 June 2022*
-
-. FIPs work has been carried out in parallel with the 2.12 release (with the QE phase at the end of 2.12 at least).
-. 2.12 has been close to release for a few weeks but we have found late bugs that needed fixing.
-. 2.12 will GA very soon, but without FIPS. We will shift our focus to FIPs (QE testing, docs etc) and follow-up 2.12 with a FIPs compatible release as quickly as possible. 
-
-. In the interim we will finish validating the FIPs alpha, fix some known issues in it and then produce a CR.
-
+. FIPs work has been carried out in parallel with the 2.12 and 2.13 releases
+. FIPS compliance will be fully GA in 2.13
 . Support exceptions to use that CR release (prior to 2.13 with FIPs going GA) will be very few.
-
-. *It's highly recommended that the purpose of installation of a CR release of API Manager be for demo and/or test only!!!!  Do not expect to use in production nor expect to receive production support from Red Hat using this candidate release.*
-
+. *It's highly recommended that the purpose of installation of a CR release of API Manager be for demo and/or test only!!!!
 . *If you are a Red Hat SA or consultant, you should be preparred to support your customers / partners with this CR release.*
 
 
@@ -47,8 +39,6 @@ This document will guide you through the procedure to access these beta release 
 .. *Filesystem*:
 ... 5 PVCs of 5 GBs each of RWO
 ... 1 PVC of 5 GBs of RWX
-+
-NOTE:  18 June 2022:  Use of AWS S3 is problematic.  Please use _Openshift Data Foundations_ operator (or some other solution ) to create RWX storage systems.
 
 .. *FIPS enabled*
 +
