@@ -371,7 +371,7 @@ registry.redhat.io/3scale-amp2/system-rhel7@sha256:afc40ae035b75e0f7ac6942bd35e9
 . After successful installation, a listing of all API Manager related pods should be similar to the following:
 +
 -----
-$ oc get pods -n rhi-apimgr
+$ oc get pods -n rhi-apimgmt
 
 
 
